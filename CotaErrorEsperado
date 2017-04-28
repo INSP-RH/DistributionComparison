@@ -1,0 +1,39 @@
+set.seed(633256)
+library(ggplot2)
+library(gridExtra) 
+M <- 100 #Population size
+n <- 30  #sample size
+
+s <-1000 #Tamaño simulación
+
+#Poblacion y su empirica
+pop   <- sample(0:50, M, replace = TRUE) 
+Freal <- ecdf(pop)
+
+#Simulacion
+muestras <- matrix(NA, ncol = n, nrow = 0)
+Error <- matrix(NA, ncol=n, nrow=0)
+t     <- seq(-10, 60, length.out = n) 
+#Aunque en estricto sentido t debería estar entre 0 50 puse así los numeros para ver
+#que pasaba y no funciona para t>=50
+
+
+for (i in 1:s) {
+    sim<- sample(pop, size=n, replace=TRUE)
+    muestras  <- rbind(muestras, sim)
+    Fni <- ecdf(sim)
+    Errori <- abs(Freal(t)- Fni(t))
+    Error <- rbind(Error,Errori)
+}
+
+#Esperanza del Error
+Esp <- colMeans(Error, na.rm = FALSE, dims = 1)
+
+#Cota  
+k <- M*Freal(t)
+cota <- abs(2*k/M -k/n -k*n/(M^2))
+
+#Ver si funciona
+Dif <- Esp - cota
+
+
