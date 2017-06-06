@@ -68,7 +68,8 @@ minAccumulatedError2 <- function(y, pop, distribution="norm"){
         
       lim <- min(ivec[i],y)
       intg1 <- as.numeric(integral(ivec[i-1],lim)[1])
-      intg2 <- as.numeric(integrate(function(t){ivec[i-1]/M + 0*t}, ivec[i-1], lim)[1])
+      #intg2 <- as.numeric(integrate(function(t){ivec[i-1]/M + 0*t}, ivec[i-1], lim)[1])
+      intg2 <- as.numeric(integrate(function(t){sumtab/M + 0*t}, ivec[i-1], lim)[1])
       sums <- sums + abs(intg1 - intg2)
       sumtab <- sumtab + tabpop[i]
       
@@ -77,9 +78,10 @@ minAccumulatedError2 <- function(y, pop, distribution="norm"){
   sums <- as.numeric(sums)
   
   
+  
   firstTerm <- firstIntegral+ sums
   
-  # Cummulative error from M to y, if y>M
+  # parte2
   if(y>Xm){
     secondTerm <- y-Xm-as.numeric(integral(Xm,y)[1])
   }else{
