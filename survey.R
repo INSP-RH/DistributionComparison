@@ -47,16 +47,10 @@ ggplot()+
 
 #Error 
 
-ma<- sample(datos, size=100, replace=FALSE)
-t     <- seq(20, 40, length.out = 20) 
+Error <- abs(ECDF-ev)
 
+ggplot()+
+  geom_line(aes(datos,Error,color="Error"))+
+  xlab("X") +
+  ylab("Error")
 
-##CHECAR ESTO DEL ERROR
-cota <- NULL
-for(i in 1:length(t)){
-  cota[i] <-  minAccumulatedError2(t[i], datos, "lnorm")
-}
-
-error <- abs(ECDF-ev)
-
-error[t]
